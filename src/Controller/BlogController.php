@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\AddArticleFormType;
+use App\Form\EditArticleFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,7 @@ class BlogController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('base.html.twig', [
-            'controller_name' => 'BlogController',
-        ]);
+        return $this->redirectToRoute('list_article');
     }
 
     #[Route('/add_article', name: 'add_article')]
@@ -27,7 +27,6 @@ class BlogController extends AbstractController
     {
         $article = new Article();
         $formArticle = $this->createForm(AddArticleFormType::class, $article);
-        var_dump("test");
         try {
             $formArticle->handleRequest($request);
             if ($formArticle->isSubmitted() && $formArticle->isValid()) {
@@ -38,11 +37,12 @@ class BlogController extends AbstractController
                 $entityManager->persist($addArticle);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Le article a été ajouté avec succès !');
+                $this->addFlash('success', 'L\'article a été ajouté avec succès !');
+                return $this->redirectToRoute('article_page', ['id' => $article->getId()]);
             }
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
-            $this->redirectToRoute('root');
+            $this->redirectToRoute('list_article');
         }
         return $this->render('blog/add_article.html.twig', [
             'formArticle' => $formArticle->createView()
@@ -98,16 +98,15 @@ class BlogController extends AbstractController
         try {
             $article = $doctrine->getRepository(Article::class)->find($id);
             if ($article === false) {
-                throw new \Exception('Le article demandé est introuvable');
+                throw new \Exception('L\'article demandé est introuvable');
             }
             $manager->remove($article);
             $manager->flush();
-            $this->addFlash('success', 'Le article a été supprimé avec succès');
+            $this->addFlash('success', 'L\'article a été supprimé avec succès');
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
-            $this->redirectToRoute('list_articles');
         }
-        return $this->redirectToRoute('list_articles');
+        return $this->redirectToRoute('list_article');
     }
 
 

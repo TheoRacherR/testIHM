@@ -18,29 +18,16 @@ class EditArticleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('name', TextType::class, [
-            'label' => `Nom de l'article`,
-            'attr' => ['class' => 'form-control mb-3']
-        ])
-
         ->add('title', TextType::class, [
-            'label' => `Titre de l'article`,
-            'attr' => ['class' => 'form-control mb-3']
+            'label' => 'Titre de l\'article'
         ])
 
-        ->add('text', TextareaType::class, [
-            'label' => 'Description',
-            'attr' => ['class' => 'form-control mb-3']
-        ])
-
-        ->add('description', TextareaType::class, [
-            'label' => 'Description',
-            'attr' => ['class' => 'form-control mb-3']
+        ->add('content', TextareaType::class, [
+            'label' => 'Contenu'
         ])
 
         ->add('save', SubmitType::class, [
-            'attr' => ['class' => 'btn btn-outline-success'],
-            'label' => 'Mettre à jour',
+            'label' => 'Mettre à jour'
         ])
         ;
     }

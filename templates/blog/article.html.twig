@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Édition d'un article{% endblock %}
+{% block title %}Article {{ article.title }}{% endblock %}
 
 {% block body %}
-    <p>Édition d'un article</p>
-    <p> id: {{ article.id }} </p>
-    <p> ownerUsername: {{ article.name }} </p>
-    <p> name: {{ article.title }} </p>
-    <p> description: {{ article.text }} </p>
-    <p> seed: {{ article.description }} </p>
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }} </p>
     <p> created_at: {{ article.createdAt|date("m/d/Y") }} </p>
     <p> updated_at: {{ article.updatedAt|date("m/d/Y") }} </p>
 
